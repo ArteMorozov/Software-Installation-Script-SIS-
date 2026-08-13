@@ -1,4 +1,4 @@
-SIS — Software Installer Scripts
+**SIS — Software Installer Scripts**
 Универсальный установщик бесплатных программ для Windows
 
 📦 О проекте
