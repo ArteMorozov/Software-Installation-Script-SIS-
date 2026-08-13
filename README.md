@@ -22,6 +22,7 @@ irm https://raw.githubusercontent.com/ArteMorozov/Software-Installation-Script-S
 - 🖥️ **Диагностика** — набор инструментов для тестирования ПК
 
 ##🧩 Что устанавливает
+
 ###Базовые программы
 - **7-Zip** — архиватор
 - **Mozilla Firefox** — браузер
