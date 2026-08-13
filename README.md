@@ -1,7 +1,7 @@
 # SIS — Software Installer Scripts
 ### Универсальный установщик бесплатных программ для Windows
 
-📦 О проекте
+## 📦 О проекте
 SIS — это открытый скрипт для PowerShell, который позволяет быстро установить набор бесплатных программ на свежую Windows. 
 
 Вдохновлён проектом MAS, но вместо активации — установка полезного софта.
@@ -12,7 +12,7 @@ SIS — это открытый скрипт для PowerShell, который �
 irm https://raw.githubusercontent.com/ArteMorozov/Software-Installation-Script-SIS-/refs/heads/main/sis.ps1 | iex
 ```
 
-✨ Возможности
+## ✨ Возможности
 
 - 🚀 **Одна команда** — запуск из PowerShell без скачивания файлов
 - 📂 **Категории** — программы сгруппированы по назначению
@@ -22,7 +22,7 @@ irm https://raw.githubusercontent.com/ArteMorozov/Software-Installation-Script-S
 - 📄 **Microsoft Office** — выбор версии и редакции
 - 🖥️ **Диагностика** — набор инструментов для тестирования ПК
 
-🧩 Что устанавливает
+## 🧩 Что устанавливает
 
 Базовые программы
 - **7-Zip** — архиватор
