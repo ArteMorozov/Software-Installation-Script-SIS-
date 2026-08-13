@@ -11,7 +11,7 @@ SIS — это открытый скрипт для PowerShell, который �
 irm https://raw.githubusercontent.com/ArteMorozov/Software-Installation-Script-SIS-/refs/heads/main/sis.ps1 | iex
 ```
 
-##✨ Возможности
+✨ Возможности
 
 - 🚀 **Одна команда** — запуск из PowerShell без скачивания файлов
 - 📂 **Категории** — программы сгруппированы по назначению
