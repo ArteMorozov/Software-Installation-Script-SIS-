@@ -6,7 +6,9 @@ SIS — это открытый скрипт для PowerShell, который �
 Вдохновлён проектом MAS, но вместо активации — установка полезного софта.
 
 Просто запустите одну команду в PowerShell от имени Администратора — и выбирайте нужные программы из удобного меню.
-"irm https://raw.githubusercontent.com/ArteMorozov/Software-Installation-Script-SIS-/refs/heads/main/sis.ps1 | iex"
+```powershell
+irm https://raw.githubusercontent.com/ArteMorozov/Software-Installation-Script-SIS-/refs/heads/main/sis.ps1 | iex
+```
 
 ✨ Возможности
 🚀 Одна команда — запуск из PowerShell без скачивания файлов
