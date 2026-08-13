@@ -5,7 +5,8 @@ SIS — Software Installer Scripts
 SIS — это открытый скрипт для PowerShell, который позволяет быстро установить набор бесплатных программ на свежую Windows. 
 Вдохновлён проектом MAS, но вместо активации — установка полезного софта.
 
-Просто запустите одну команду в PowerShell от имени Администратора — и выбирайте нужные программы из удобного меню.
+Просто запустите одну команду в PowerShell от имени Администратора — 
+и выбирайте нужные программы из удобного меню.
 ```powershell
 irm https://raw.githubusercontent.com/ArteMorozov/Software-Installation-Script-SIS-/refs/heads/main/sis.ps1 | iex
 ```
