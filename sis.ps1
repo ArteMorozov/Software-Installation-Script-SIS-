@@ -1,5 +1,5 @@
 # ============================================
-# SIS v2.0 - Универсальный установщик софта
+# SIS v2.2 - Универсальный установщик софта
 # ============================================
 
 # Проверка прав администратора
@@ -150,14 +150,14 @@ $apps = @{
         name = "WizTree"
         url = "https://diskanalyzer.com/files/WizTree_4_32_setup.exe"
         silent = "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART"
-        winget = "Antibody.WizTree"
+        winget = "AntibodySoftware.WizTree"  # исправленный ID
         category = "Системные утилиты"
     }
     "killerpdf" = @{
         name = "KillerPDF"
         url = "https://github.com/SteveTheKiller/KillerPDF/releases/latest/download/KillerPDF.exe"
         silent = "/silent"
-        winget = "killerpdf"
+        winget = "SteveTheKiller.KillerPDF"  # исправлено
         category = "Системные утилиты"
     }
     "adobereader" = @{
@@ -172,10 +172,14 @@ $apps = @{
         category = "Системные утилиты"
     }
     
-    # ----- БРАУЗЕРЫ -----
+# ----- БРАУЗЕРЫ -----
     "yandex" = @{
         name = "Яндекс Браузер"
-        url = "https://browser.yandex.ru/download/?bank=86&os=windows&lang=ru&bitness=64"
+        url = if ($is64Bit) { 
+        "https://browser.yandex.ru/download/?bank=86&os=windows&lang=ru&bitness=64"
+        } else { 
+        "https://browser.yandex.ru/download/?bank=86&os=windows&lang=ru&bitness=32"
+        }
         silent = "/S"
         winget = "Yandex.Browser"
         category = "Браузеры"
@@ -189,26 +193,37 @@ $apps = @{
     }
     "chromiumgost" = @{
         name = "Chromium-GOST"
-        url = "https://github.com/deemru/chromium-gost/releases/download/150.0.7871.224/chromium-gost-150.0.7871.224-windows-amd64-installer.exe"
+        url = if ($is64Bit) { 
+        "https://github.com/deemru/chromium-gost/releases/download/150.0.7871.224/chromium-gost-150.0.7871.224-windows-amd64-installer.exe"
+        } else { 
+        "https://github.com/deemru/chromium-gost/releases/download/150.0.7871.224/chromium-gost-150.0.7871.224-windows-386-installer.exe"
+        }
         silent = "/S"
-        winget = "deemru.chromium-gost"
+        # winget удалён (нет в репозитории)
         category = "Браузеры"
     }
     "supermium" = @{
         name = "Supermium Browser"
-        url = "https://github.com/win32ss/supermium/releases/download/v126/Supermium_126_Setup.exe"
+        url = if ($is64Bit) { 
+        "https://github.com/win32ss/supermium/releases/download/144.0.7559.256-R5/supermium_144_64_setup_win10_11.exe"
+        } else { 
+        "https://github.com/win32ss/supermium/releases/download/144.0.7559.256-R5/supermium_144_32_setup.exe"
+        }
         silent = "/S"
-        winget = "Supermium.Supermium"
+        winget = "win32ss.Supermium"
         category = "Браузеры"
     }
     "mozilla" = @{
         name = "Mozilla Firefox (рус.)"
-        url = "https://download.mozilla.org/?product=firefox-stub&os=win64&lang=ru"
+        url = if ($is64Bit) { 
+        "https://download.mozilla.org/?product=firefox-stub&os=win64&lang=ru"
+        } else { 
+        "https://download.mozilla.org/?product=firefox-stub&os=win32&lang=ru"
+        }
         silent = "/S"
         winget = "Mozilla.Firefox"
         category = "Браузеры"
-    }
-    
+    }    
     # ----- ДИАГНОСТИКА -----
     "cpuz" = @{
         name = "CPU-Z"
@@ -221,14 +236,14 @@ $apps = @{
         name = "MSI Afterburner"
         url = "https://download.msi.com/uti_exe/vga/MSIAfterburnerSetup.zip"
         silent = "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART"
-        winget = "MSI.Afterburner"
+        winget = "Guru3D.Afterburner"
         category = "Диагностика"
     }
     "superposition" = @{
         name = "Superposition Benchmark"
         url = "https://benchmark.unigine.com/media/Unigine_Superposition-1.1.exe"
         silent = "/S"
-        winget = "Unigine.Superposition"
+        winget = "Unigine.SuperpositionBenchmark"
         category = "Диагностика"
     }
     "performancetest" = @{
@@ -249,14 +264,14 @@ $apps = @{
         name = "FurMark"
         url = "https://geeks3d.com/downloads/2025/FurMark_2.4.2.0_Setup.exe"
         silent = "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART"
-        winget = "Geeks3D.FurMark"
+        winget = "Geeks3D.FurMark.2"
         category = "Диагностика"
     }
     "occt" = @{
         name = "OCCT"
         url = "https://www.ocbase.com/download/OCCT.exe"
         silent = "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART"
-        winget = "OCCT.OCCT"
+        winget = "OCBase.OCCT.Personal"
         category = "Диагностика"
     }
 }
@@ -345,50 +360,74 @@ function Install-App {
 # ============================================
 
 function Download-Certificates {
-    Write-Host "Скачивание сертификатов Минцифры..." -ForegroundColor Yellow
-    
-    $downloadsPath = [Environment]::GetFolderPath("Downloads")
+    Write-Host "Скачивание сертификатов Минцифры с портала Госуслуг..." -ForegroundColor Yellow
+
+    $downloadsPath = [Environment]::GetFolderPath('UserProfile') + "\Downloads"
     $certsDir = Join-Path $downloadsPath "Минцифра_Сертификаты"
-    
+
     New-Item -ItemType Directory -Path $certsDir -Force | Out-Null
-    
+
+    # Список сертификатов с официального портала Госуслуг
     $certs = @(
         @{
             name = "Russian Trusted Root CA.cer"
-            url = "https://www.minsvyaz.ru/upload/iblock/1a4/Russian%20Trusted%20Root%20CA.cer"
+            url = "https://www.gosuslugi.ru/crt/RussianTrustedRootCA.cer"
+            description = "Корневой сертификат"
         },
         @{
             name = "Russian Trusted Sub CA.cer"
-            url = "https://www.minsvyaz.ru/upload/iblock/1a4/Russian%20Trusted%20Sub%20CA.cer"
+            url = "https://www.gosuslugi.ru/crt/RussianTrustedSubCA.cer"
+            description = "Промежуточный сертификат"
         }
     )
-    
+
+    $allDownloaded = $true
+
     foreach ($cert in $certs) {
         $outputPath = Join-Path $certsDir $cert.name
+        $downloaded = $false
+
         try {
-            Write-Host "Скачивание $($cert.name)..." -ForegroundColor Cyan
-            Invoke-WebRequest -Uri $cert.url -OutFile $outputPath -UseBasicParsing
-            Write-Host "✓ $($cert.name) сохранён в: $outputPath" -ForegroundColor Green
+            Write-Host "Скачивание $($cert.description) ($($cert.name))..." -ForegroundColor Cyan
+            Invoke-WebRequest -Uri $cert.url -OutFile $outputPath -UseBasicParsing -TimeoutSec 15
+            Write-Host "✓ $($cert.name) успешно сохранён!" -ForegroundColor Green
+            $downloaded = $true
         }
         catch {
             Write-Host "✗ Ошибка при скачивании $($cert.name): $_" -ForegroundColor Red
+            $allDownloaded = $false
         }
     }
-    
-    Write-Host ""
-    Write-Host "Сертификаты скачаны в папку:" -ForegroundColor Yellow
-    Write-Host $certsDir -ForegroundColor Cyan
-    Write-Host ""
-    Write-Host "Для установки сертификатов:" -ForegroundColor White
-    Write-Host "1. Дважды кликните на каждом .cer файле" -ForegroundColor Gray
-    Write-Host "2. Нажмите 'Установить сертификат'" -ForegroundColor Gray
-    Write-Host "3. Выберите 'Место хранения: Локальный компьютер'" -ForegroundColor Gray
-    Write-Host "4. Выберите 'Поместить все сертификаты в следующее хранилище'" -ForegroundColor Gray
-    Write-Host "5. Нажмите 'Обзор' и выберите 'Доверенные корневые центры сертификации'" -ForegroundColor Gray
-    Write-Host "6. Нажмите 'Далее' и 'Готово'" -ForegroundColor Gray
+
     Write-Host ""
     
-    Start-Process explorer.exe $certsDir
+    if ($allDownloaded) {
+        Write-Host "✅ Все сертификаты успешно скачаны в папку:" -ForegroundColor Green
+        Write-Host $certsDir -ForegroundColor Cyan
+        Write-Host ""
+        Write-Host "📌 Для установки сертификатов:" -ForegroundColor White
+        Write-Host "1. Дважды кликните на каждом .cer файле" -ForegroundColor Gray
+        Write-Host "2. Нажмите 'Установить сертификат'" -ForegroundColor Gray
+        Write-Host "3. Выберите 'Место хранения: Локальный компьютер'" -ForegroundColor Gray
+        Write-Host "4. Выберите 'Поместить все сертификаты в следующее хранилище'" -ForegroundColor Gray
+        Write-Host "5. Нажмите 'Обзор' и выберите 'Доверенные корневые центры сертификации'" -ForegroundColor Gray
+        Write-Host "6. Нажмите 'Далее' и 'Готово'" -ForegroundColor Gray
+        Write-Host ""
+        Start-Process explorer.exe $certsDir
+    } else {
+        Write-Host "❌ Не удалось скачать сертификаты автоматически." -ForegroundColor Red
+        Write-Host "Пожалуйста, скачайте их вручную с портала Госуслуг:" -ForegroundColor Yellow
+        Write-Host "https://www.gosuslugi.ru/crt" -ForegroundColor Cyan
+        Write-Host ""
+        Write-Host "На странице нажмите 'Скачать сертификаты'." -ForegroundColor White
+        Write-Host "После скачивания поместите файлы в папку:" -ForegroundColor White
+        Write-Host $certsDir -ForegroundColor Cyan
+        
+        # Открываем страницу с сертификатами в браузере
+        Start-Process "https://www.gosuslugi.ru/crt"
+        Start-Process explorer.exe $downloadsPath
+    }
+
     Read-Host "Нажмите Enter для продолжения"
 }
 
@@ -404,81 +443,45 @@ function Install-Office {
     Write-Host ""
     Write-Host "Выберите версию Office:" -ForegroundColor White
     Write-Host ""
-    Write-Host "  [1] Office 2024 ProPlus" -ForegroundColor Green
-    Write-Host "  [2] Office 2024 Home" -ForegroundColor Green
-    Write-Host "  [3] Office 2021 ProPlus" -ForegroundColor Green
-    Write-Host "  [4] Office 2021 Professional" -ForegroundColor Green
-    Write-Host "  [5] Office 2019 ProPlus" -ForegroundColor Green
-    Write-Host "  [6] Office 2016 ProPlus" -ForegroundColor Green
-    Write-Host "  [7] Office 2013 ProPlus" -ForegroundColor Green
-    Write-Host "  [8] Microsoft 365 (O365ProPlusRetail)" -ForegroundColor Green
+    Write-Host "  [1] Office 2024" -ForegroundColor Green
+    Write-Host "  [2] Office 2021" -ForegroundColor Green
+    Write-Host "  [3] Microsoft 365" -ForegroundColor Green
+    Write-Host "  [4] Office 2019" -ForegroundColor Green
+    Write-Host "  [5] Office 2016" -ForegroundColor Green
+    Write-Host "  [6] Office 2013" -ForegroundColor Green
     Write-Host ""
     Write-Host "  [0] Назад" -ForegroundColor Red
     Write-Host ""
-    
+
     $choice = Read-Host "Ваш выбор"
-    
-    $officeVersions = @{
-        "1" = "ProPlus2024Retail"
-        "2" = "Home2024Retail"
-        "3" = "ProPlus2021Retail"
-        "4" = "Professional2021Retail"
-        "5" = "ProPlus2019Retail"
-        "6" = "ProPlusRetail"
-        "7" = "ProPlusRetail"
-        "8" = "O365ProPlusRetail"
+
+    $officeUrls = @{
+        "1" = "https://softnet.su/download/microsoft-office/office-2024/"
+        "2" = "https://softnet.su/download/microsoft-office/office-2021/"
+        "3" = "https://softnet.su/download/microsoft-office/office-365/"
+        "4" = "https://softnet.su/download/microsoft-office/office-2019/"
+        "5" = "https://softnet.su/download/microsoft-office/office-2016/"
+        "6" = "https://softnet.su/download/microsoft-office/microsoft-office-2013/"
     }
-    
+
     if ($choice -eq "0") { return }
-    
-    $productID = $officeVersions[$choice]
-    if (-not $productID) {
+
+    $url = $officeUrls[$choice]
+    if (-not $url) {
         Write-Host "Неверный выбор!" -ForegroundColor Red
         Read-Host "Нажмите Enter"
         return
     }
-    
-    $lang = "ru-RU"
-    $officeURL = "https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117"
-    
-    if ($choice -eq "7") {
-        $officeURL = "https://www.microsoft.com/en-us/download/details.aspx?id=39520"
-    }
-    
-    Write-Host "Скачивание установщика Office..." -ForegroundColor Yellow
-    $tempFile = "$env:TEMP\OfficeSetup.exe"
-    
-    try {
-        Invoke-WebRequest -Uri $officeURL -OutFile $tempFile -UseBasicParsing
-        
-        $configXml = @"
-<Configuration>
-  <Add OfficeClientEdition="$arch" Channel="Current">
-    <Product ID="$productID">
-      <Language ID="$lang" />
-    </Product>
-  </Add>
-</Configuration>
-"@
-        $configPath = "$env:TEMP\office_config.xml"
-        $configXml | Out-File -FilePath $configPath -Encoding UTF8
-        
-        Write-Host "Установка Office $productID..." -ForegroundColor Yellow
-        $process = Start-Process -FilePath $tempFile -ArgumentList "/configure `"$configPath`"" -Wait -PassThru
-        
-        if ($process.ExitCode -eq 0) {
-            Write-Host "✓ Office установлен!" -ForegroundColor Green
-        } else {
-            Write-Host "✗ Ошибка при установке Office (код: $($process.ExitCode))" -ForegroundColor Red
-        }
-    }
-    catch {
-        Write-Host "✗ Ошибка: $_" -ForegroundColor Red
-    }
-    finally {
-        Remove-Item $tempFile -ErrorAction SilentlyContinue
-        Remove-Item $configPath -ErrorAction SilentlyContinue
-    }
+
+    Write-Host "Открываем страницу с загрузкой Office..." -ForegroundColor Yellow
+    Start-Process $url
+    Write-Host ""
+    Write-Host "На странице нажмите кнопку 'Скачать'." -ForegroundColor Cyan
+    Write-Host "После скачивания ISO-образа:" -ForegroundColor White
+    Write-Host "1. Откройте папку 'Загрузки'" -ForegroundColor Gray
+    Write-Host "2. Запустите скачанный ISO-файл" -ForegroundColor Gray
+    Write-Host "3. Следуйте инструкциям установщика" -ForegroundColor Gray
+    Write-Host ""
     
     Read-Host "Нажмите Enter для продолжения"
 }
@@ -728,7 +731,7 @@ function Show-SubMenu {
 function Show-MainMenu {
     Clear-Host
     Write-Host "============================================================" -ForegroundColor Cyan
-    Write-Host "         SIS v2.0" -ForegroundColor Yellow
+    Write-Host "         SIS v2.2" -ForegroundColor Yellow
     Write-Host "============================================================" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "  [1] Базовые программы (10)" -ForegroundColor Green
