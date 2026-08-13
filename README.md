@@ -24,7 +24,7 @@ irm https://raw.githubusercontent.com/ArteMorozov/Software-Installation-Script-S
 
 ## 🧩 Что устанавливает
 
-Базовые программы
+### Базовые программы
 - **7-Zip** — архиватор
 - **Mozilla Firefox** — браузер
 - **VLC Media Player** — универсальный плеер
@@ -36,19 +36,19 @@ irm https://raw.githubusercontent.com/ArteMorozov/Software-Installation-Script-S
 - **Everything** — мгновенный поиск файлов
 - **K-Lite Codec Pack Full** — набор кодеков для видео и аудио
 
-Системные утилиты
+### Системные утилиты
 - **WizTree** — анализ занятого места на диске
 - **KillerPDF** — бесплатный редактор PDF (OCR, подписи, аннотации)
 - **Adobe Acrobat Reader DC** — просмотр и работа с PDF (русская версия)
 
-Браузеры
+### Браузеры
 - **Яндекс Браузер**
 - **Google Chrome**
 - **Chromium-GOST** — с поддержкой российских криптостандартов
 - **Supermium** — современный браузер для старых версий Windows
 - **Mozilla Firefox (русская версия)**
 
-Диагностика
+### Диагностика
 - **CPU-Z** — информация о процессоре и ОЗУ
 - **MSI Afterburner** — разгон и мониторинг видеокарты
 - **Superposition Benchmark** — тест производительности
@@ -57,7 +57,7 @@ irm https://raw.githubusercontent.com/ArteMorozov/Software-Installation-Script-S
 - **FurMark** — стресс-тест видеокарты
 - **OCCT** — тестирование стабильности компонентов
 
-Дополнительно
+### Дополнительно
 - **Microsoft Office (2013–2024, M365)** — выбор версии и редакции
 - **Visual C++ Redistributable AIO** — все версии одним пакетом
 - **Сертификаты Минцифры** — скачивание в папку Загрузки
