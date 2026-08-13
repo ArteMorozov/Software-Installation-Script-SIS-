@@ -62,28 +62,19 @@ irm https://raw.githubusercontent.com/ArteMorozov/Software-Installation-Script-S
 - **Visual C++ Redistributable AIO** — все версии одним пакетом
 - **Сертификаты Минцифры** — скачивание в папку Загрузки
 
-> **⚠️ Важное предупреждение**
->
-> Команда `irm ... | iex` скачивает скрипт с указанного URL и выполняет его в PowerShell.
->
-> **Перед выполнением команды:**
-> - Всегда проверяйте URL-адрес
-> - Убедитесь в надёжности источника
-> - Будьте осторожны с третьими лицами, распространяющими вредоносное ПО
-
-<blockquote style="background: #fff3e0; padding: 15px 20px; border-left: 6px solid #ff6d00; border-radius: 4px; margin: 20px 0;">
-  <p style="font-size: 16px; color: #bf360c; margin: 0 0 10px 0;">
-    <strong>🦊 ВАЖНОЕ ПРЕДУПРЕЖДЕНИЕ</strong>
+<blockquote style="border-left: 6px solid #FF6D00; padding-left: 15px; background: #FFF8F0; margin: 20px 0;">
+  <p style="font-weight: bold; color: #BF360C; margin: 0 0 10px 0;">
+    🦊 ВАЖНОЕ ПРИМЕЧАНИЕ
   </p>
-  <p style="margin: 5px 0; color: #4e342e;">
-    Команда <code style="background: #ffe0b2; padding: 2px 6px; border-radius: 3px;">irm ... | iex</code> скачивает скрипт с указанного URL и выполняет его в PowerShell.
+  <p style="margin: 5px 0; color: #4E342E;">
+    Команда <code style="background: #FFE0B2; padding: 2px 6px; border-radius: 3px;">irm ... | iex</code> скачивает скрипт с указанного URL и выполняет его в PowerShell.
   </p>
-  <ul style="margin: 10px 0 0 20px; padding: 0; color: #4e342e;">
+  <ul style="margin: 10px 0 0 20px; padding: 0; color: #4E342E;">
     <li>🔍 Всегда проверяйте URL-адрес</li>
     <li>✅ Убедитесь в надёжности источника</li>
     <li>⚠️ Будьте осторожны с поддельными ссылками</li>
   </ul>
-  <p style="margin: 10px 0 0 0; color: #bf360c; font-weight: bold;">
+  <p style="margin: 10px 0 0 0; color: #BF360C; font-weight: bold;">
     🛡️ Безопасность превыше всего!
   </p>
 </blockquote>
