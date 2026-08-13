@@ -12,6 +12,21 @@ SIS — это открытый скрипт для PowerShell, который �
 irm https://raw.githubusercontent.com/ArteMorozov/Software-Installation-Script-SIS-/refs/heads/main/sis.ps1 | iex
 ```
 
+Если возникает проблема с использованием скриптов используйте команду от имени Администратора для текущего пользователя
+```powershell
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+или
+```powershell
+Set-ExecutionPolicy RemoteSigned
+```
+для вех пользователей. Подтвердите кнопкой Y. Эта команда разрешает запуск скриптов постоянно.
+
+Для единоразовой работы скриптов в текущем окне PowerShell используйте команду
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+```
+
 ## ✨ Возможности
 
 - 🚀 **Одна команда** — запуск из PowerShell без скачивания файлов
