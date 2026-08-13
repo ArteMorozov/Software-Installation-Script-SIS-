@@ -63,7 +63,7 @@ irm https://raw.githubusercontent.com/ArteMorozov/Software-Installation-Script-S
 - **Сертификаты Минцифры** — скачивание в папку Загрузки
 
 > [!CAUTION]
-> **🦊 ВАЖНОЕ ПРИМЕЧАНИЕ**
+> **ВАЖНОЕ ПРИМЕЧАНИЕ**
 >
 > Команда `irm ... | iex` скачивает скрипт с указанного URL и выполняет его в PowerShell.
 >
@@ -72,3 +72,4 @@ irm https://raw.githubusercontent.com/ArteMorozov/Software-Installation-Script-S
 > - ⚠️ Будьте осторожны с поддельными ссылками
 >
 > 🛡️ **Безопасность превыше всего!**
+> 🦊
