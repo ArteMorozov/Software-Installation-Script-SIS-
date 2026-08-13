@@ -62,7 +62,7 @@ irm https://raw.githubusercontent.com/ArteMorozov/Software-Installation-Script-S
 - **Visual C++ Redistributable AIO** — все версии одним пакетом
 - **Сертификаты Минцифры** — скачивание в папку Загрузки
 
-> [!CAUTION]
+> [!WARNING]
 > **ВАЖНОЕ ПРИМЕЧАНИЕ**
 >
 > Команда `irm ... | iex` скачивает скрипт с указанного URL и выполняет его в PowerShell.
