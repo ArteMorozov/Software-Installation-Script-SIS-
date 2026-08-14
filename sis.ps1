@@ -356,56 +356,24 @@ function Install-App {
 }
 
 # ============================================
-# ФУНКЦИЯ СКАЧИВАНИЯ СЕРТИФИКАТОВ
+# ФУНКЦИЯ ОТКРЫТИЯ СТРАНИЦЫ С СЕРТИФИКАТАМИ
 # ============================================
 
 function Download-Certificates {
-    Write-Host "Скачивание сертификатов Минцифры с портала Госуслуг..." -ForegroundColor Yellow
-
-    $downloadsPath = [Environment]::GetFolderPath('UserProfile') + "\Downloads"
-    $certsDir = Join-Path $downloadsPath "Минцифра_Сертификаты"
-
-    New-Item -ItemType Directory -Path $certsDir -Force | Out-Null
-
-    # Список сертификатов с официального портала Госуслуг
-    $certs = @(
-        @{
-            name = "Russian Trusted Root CA.cer"
-            url = "https://www.gosuslugi.ru/crt/RussianTrustedRootCA.cer"
-            description = "Корневой сертификат"
-        },
-        @{
-            name = "Russian Trusted Sub CA.cer"
-            url = "https://www.gosuslugi.ru/crt/RussianTrustedSubCA.cer"
-            description = "Промежуточный сертификат"
-        }
-    )
-
-    $allDownloaded = $true
-
-    foreach ($cert in $certs) {
-        $outputPath = Join-Path $certsDir $cert.name
-        $downloaded = $false
-
-        try {
-            Write-Host "Скачивание $($cert.description) ($($cert.name))..." -ForegroundColor Cyan
-            Invoke-WebRequest -Uri $cert.url -OutFile $outputPath -UseBasicParsing -TimeoutSec 15
-            Write-Host "✓ $($cert.name) успешно сохранён!" -ForegroundColor Green
-            $downloaded = $true
-        }
-        catch {
-            Write-Host "✗ Ошибка при скачивании $($cert.name): $_" -ForegroundColor Red
-            $allDownloaded = $false
-        }
-    }
-
+    Clear-Host
+    Write-Host "============================================" -ForegroundColor Cyan
+    Write-Host "    СЕРТИФИКАТЫ МИНЦИФРЫ" -ForegroundColor Yellow
+    Write-Host "============================================" -ForegroundColor Cyan
     Write-Host ""
+    Write-Host "Открываю страницу с сертификатами на портале Госуслуг..." -ForegroundColor Yellow
     
-    if ($allDownloaded) {
-        Write-Host "✅ Все сертификаты успешно скачаны в папку:" -ForegroundColor Green
-        Write-Host $certsDir -ForegroundColor Cyan
+    try {
+        Start-Process "https://www.gosuslugi.ru/crt"
+        Write-Host "✓ Страница открыта в браузере!" -ForegroundColor Green
         Write-Host ""
-        Write-Host "📌 Для установки сертификатов:" -ForegroundColor White
+        Write-Host "📌 На странице нажмите кнопку 'Скачать сертификаты'." -ForegroundColor White
+        Write-Host "После скачивания установите их согласно инструкции:" -ForegroundColor White
+        Write-Host ""
         Write-Host "1. Дважды кликните на каждом .cer файле" -ForegroundColor Gray
         Write-Host "2. Нажмите 'Установить сертификат'" -ForegroundColor Gray
         Write-Host "3. Выберите 'Место хранения: Локальный компьютер'" -ForegroundColor Gray
@@ -413,24 +381,14 @@ function Download-Certificates {
         Write-Host "5. Нажмите 'Обзор' и выберите 'Доверенные корневые центры сертификации'" -ForegroundColor Gray
         Write-Host "6. Нажмите 'Далее' и 'Готово'" -ForegroundColor Gray
         Write-Host ""
-        Start-Process explorer.exe $certsDir
-    } else {
-        Write-Host "❌ Не удалось скачать сертификаты автоматически." -ForegroundColor Red
-        Write-Host "Пожалуйста, скачайте их вручную с портала Госуслуг:" -ForegroundColor Yellow
-        Write-Host "https://www.gosuslugi.ru/crt" -ForegroundColor Cyan
-        Write-Host ""
-        Write-Host "На странице нажмите 'Скачать сертификаты'." -ForegroundColor White
-        Write-Host "После скачивания поместите файлы в папку:" -ForegroundColor White
-        Write-Host $certsDir -ForegroundColor Cyan
-        
-        # Открываем страницу с сертификатами в браузере
-        Start-Process "https://www.gosuslugi.ru/crt"
-        Start-Process explorer.exe $downloadsPath
     }
-
+    catch {
+        Write-Host "✗ Не удалось открыть страницу: $_" -ForegroundColor Red
+        Write-Host "Пожалуйста, откройте вручную: https://www.gosuslugi.ru/crt" -ForegroundColor Yellow
+    }
+    
     Read-Host "Нажмите Enter для продолжения"
 }
-
 # ============================================
 # ФУНКЦИЯ УСТАНОВКИ OFFICE
 # ============================================
